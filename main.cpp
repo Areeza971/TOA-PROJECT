@@ -1,23 +1,29 @@
+#include "DFAFactory.h"
 #include "DFA.h"
-#include <vector>
-using namespace std;
+#include <iostream>
 
 int main() {
-    // Example DFA with 3 states (0,1,2), alphabet size 2 (inputs 0 and 1)
-    int num_states = 3;
-    int alph_size = 2;
-    int start_state = 0;
+    DFAFactory factory;
 
-    // State 2 is the only final state
-    vector<bool> finals = {false, false, true};
+    // Generate a DFA that accepts strings ending in 01
+    DFA* dfa1 = factory.endsIn01_inefficient();
+    std::cout << "DFA 1: Ends in 01\n";
+    dfa1->print_DFA();
 
-    // Transitions: from state Tails[i], under input Labels[i], go to Heads[i]
-    vector<int> Tails = {0, 0, 1, 2};
-    vector<int> Labels = {0, 1, 1, 0};
-    vector<int> Heads = {1, 2, 2, 1};
+    // Generate an exponential DFA
+    DFA* dfa2 = factory.exponential_DFA(3, 2);  // n=3, alphabet size = 2
+    std::cout << "DFA 2: Exponential DFA\n";
+    dfa2->print_DFA();
 
-    DFA dfa(num_states, alph_size, start_state, finals, Tails, Labels, Heads);
-    dfa.print_DFA();
+    // Generate a random DFA
+    DFA* dfa3 = factory.random(5, 2);  // n=5, alphabet size = 2
+    std::cout << "DFA 3: Random DFA\n";
+    dfa3->print_DFA();
+
+    // Generate a minimal DFA for repeating 01 language
+    DFA* dfa4 = factory.repeating_01(2);  // n=2
+    std::cout << "DFA 4: Repeating 01 DFA\n";
+    dfa4->print_DFA();
 
     return 0;
 }
